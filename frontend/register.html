@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Join StartupFin</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="dark-theme">
+    <div class="registration-container">
+        <h2>Join the Ecosystem</h2>
+        
+        <form id="startupForm">
+            <h3>Startup Registration</h3>
+            <input type="text" id="name" placeholder="Startup Name" required>
+            <select id="industry">
+                <option value="AI">AI</option>
+                <option value="FinTech">FinTech</option>
+                <option value="SaaS">SaaS</option>
+                <option value="HealthTech">HealthTech</option>
+            </select>
+            <input type="number" id="goal" placeholder="Funding Goal ($)" required>
+            <textarea id="desc" placeholder="Brief Pitch..."></textarea>
+            <button type="submit">List My Startup</button>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('startupForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const formData = {
+                name: document.getElementById('name').value,
+                industry: document.getElementById('industry').value,
+                fundingGoal: document.getElementById('goal').value,
+                description: document.getElementById('desc').value
+            };
+
+            const response = await fetch('http://localhost:5000/api/register/startup', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(formData)
+            });
+
+            const result = await response.json();
+            alert(result.message);
+            window.location.href = "index.html"; // Redirect to home to see the new startup
+        });
+    </script>
+</body>
+</html>

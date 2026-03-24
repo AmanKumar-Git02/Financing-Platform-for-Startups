@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StartupFin - AI Matching Platform</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+      <nav>
+        <div class="logo">Startup<span>Fin</span></div>
+        
+        <div class="nav-actions">
+            <button class="nav-btn secondary" onclick="window.location.href='register.html'">
+                List a Startup
+            </button>
+            <button class="nav-btn primary" onclick="window.location.href='investor-join.html'">
+                Find Investments
+            </button>
+            
+            <div id="user-display" class="user-profile" style="display:none;"></div>
+        </div>
+      </nav>
+    </header>
+
+    <main>
+        <section class="hero">
+            <h1>Discover Your Next <span>Big Investment</span></h1>
+            <p>AI-driven matching based on your portfolio DNA, social proof and your personal interests.</p>
+        </section>
+
+        <section class="container">
+            <div class="section-header">
+                <h2>Established</h2>
+                <span class="logic-label">Algorithm: Collaborative Filtering</span>
+            </div>
+            <div id="all-startups-grid" class="startup-grid">
+                <div class="loader">Connecting to Brain...</div>
+            </div>
+        </section>
+
+        <section class="container new-discoveries">
+            <div class="section-header">
+                <h2>New & Rising</h2>
+                <span class="logic-label">Algorithm: Contextual Bandits</span>
+            </div>
+            <div id="new-startups-grid" class="startup-grid">
+                </div>
+        </section>
+    </main>
+
+    <script src="app.js"></script>
+</body>
+</html>

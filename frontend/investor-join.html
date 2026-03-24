@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Join StartupFin</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="dark-theme">
+    <div class="registration-container">
+        <h2>Investor Onboarding</h2>
+        <input type="text" id="invName" placeholder="Full Name">
+        <input type="email" id="invEmail" placeholder="Email Address">
+    
+        <p>Select your interests (DNA):</p>
+        <div class="chip-container">
+            <input type="checkbox" value="AI" class="interest"> AI
+            <input type="checkbox" value="FinTech" class="interest"> FinTech
+            <input type="checkbox" value="SaaS" class="interest"> SaaS
+            <input type="checkbox" value="HealthTech" class="interest"> HealthTech
+        </div>
+    
+        <button onclick="registerInvestor()">Start Investing</button>
+
+        <div style="margin-top: 20px; border-top: 1px solid #30363d; padding-top: 15px; text-align: center;">
+            <p style="color: #8b949e; font-size: 0.9rem;">Already joined?</p>
+            <input type="email" id="loginEmail" placeholder="Enter your registered email">
+            <button onclick="loginInvestor()" style="background: transparent; border: 1px solid var(--accent); color: var(--accent); margin-top: 5px;">
+                Login to Dashboard
+            </button>
+        </div>
+    </div>
+
+    <script>
+        async function registerInvestor() {
+            const name = document.getElementById('invName').value;
+            const email = document.getElementById('invEmail').value;
+            const interests = Array.from(document.querySelectorAll('.interest:checked')).map(el => el.value);
+
+            try {
+                const res = await fetch('http://localhost:5000/api/investor/register', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ name, email, interests })
+                });
+
+                const data = await res.json();
+
+                if (res.ok) { // Only save if status is 200-299
+                    localStorage.setItem('investorId', data._id);
+                    localStorage.setItem('investorName', data.name);
+                    alert("Welcome " + data.name + "!");
+                    window.location.href = "index.html"; 
+                } else {
+                    // This catches the "Email already exists" error from MongoDB
+                    alert("Error: " + (data.error || "Registration failed"));
+                }
+            } catch (err) {
+                alert("Server is offline. Please start node server.js");
+            }
+        }
+        async function loginInvestor() {
+            const email = document.getElementById('loginEmail').value;
+
+            try {
+                const res = await fetch('http://localhost:5000/api/investor/login', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ email })
+                });
+
+                const data = await res.json();
+
+                if (res.ok) {
+                    localStorage.setItem('investorId', data._id);
+                    localStorage.setItem('investorName', data.name);
+                    alert("Welcome back, " + data.name + "!");
+                    window.location.href = "index.html"; 
+                } else {
+                    alert(data.error);
+                }
+            } catch (err) {
+                alert("Server error. Check your backend.");
+            }
+        }
+    </script>
+</body>
+</html>
